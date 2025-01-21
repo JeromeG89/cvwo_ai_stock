@@ -304,13 +304,16 @@ def login_user(username: str = Body(...), password: str = Body(...)):
         if not user:
             raise HTTPException(status_code=404, detail="User not found")
 
+        # Ensure user["password_hash"] is a bytes object
+        stored_password_hash = user["password_hash"]
+        if isinstance(stored_password_hash, str):
+            stored_password_hash = stored_password_hash.encode("utf-8")
+
         # Verify the password
-        if bcrypt.checkpw(password.encode("utf-8"), user["password_hash"].encode("utf-8")):
+        if bcrypt.checkpw(password.encode("utf-8"), stored_password_hash):
             return {"message": "Login successful", "user_id": user["id"]}
         else:
             raise HTTPException(status_code=401, detail="Invalid credentials")
-    except mysql.connector.Error as e:
-        raise HTTPException(status_code=500, detail=f"MySQL Error: {e}")
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Server Error: {e}")
     finally:
