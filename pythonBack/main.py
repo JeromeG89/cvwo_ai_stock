@@ -89,7 +89,7 @@ def get_logs(aucMin: float, background_tasks: BackgroundTasks):
             
             today = datetime.combine(date.today(), datetime.min.time())
             # Check if output_date is in the past and final_price is missing
-            if result["output_date"] + timedelta(7) < today and not result.get("final_price"):
+            if result["output_date"] + timedelta(7) < today and not result.get("output_price"):
                 print(f"Processing {result['ticker']} for output_date {result['output_date']}...")
                 
                 # Fetch final_price
