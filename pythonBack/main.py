@@ -195,9 +195,9 @@ def get_chat():
         cursor.execute(query)
         results = cursor.fetchall()
         results = [dict(row) for row in results]
-        for result in results:
-            if result["timestamp"]:
-                result["timestamp"] = result["timestamp"].strftime("%Y-%m-%d %H:%M:?")
+        # for result in results:
+        #     if result["timestamp"]:
+        #         result["timestamp"] = result["timestamp"].strftime("%Y-%m-%d %H:%M:?")
         print(results)
         return results
 
