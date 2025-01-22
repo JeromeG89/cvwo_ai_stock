@@ -1,0 +1,74 @@
+
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 16px;
+    text-align: left;
+  }
+  
+  th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+  }
+  
+  th {
+    background-color: #f4f4f4;
+    color: #333;
+  }
+  
+  tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+  
+  tr:hover {
+    background-color: #f1f1f1;
+  }
+  
+  thead {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+  }
+  
+  h1 {
+    text-align: center;
+    color: #444;
+    margin-bottom: 20px;
+  }
+  
+  p {
+    color: red;
+    text-align: center;
+  }
+  
+  .App {
+    margin: 20px auto;
+    max-width: 80%;
+    font-family: Arial, sans-serif;
+  }
+  
+  table {
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .outcome-true {
+    background-color: green;
+    color: white;
+    text-align: center;
+    font-weight: bold;
+  }
+  
+  .outcome-false {
+    background-color: red;
+    color: white;
+    text-align: center;
+    font-weight: bold;
+  }
+
+  .symbol-header{
+    text-align: center;
+    color: #333;
+    font-size: 48px;
+  }
