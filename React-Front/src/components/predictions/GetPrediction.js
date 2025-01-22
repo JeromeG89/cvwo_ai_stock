@@ -8,24 +8,29 @@ function GetPrediction() {
   const [logs, setLogs] = useState([]);
   const [error, setError] = useState("");
   const [tickerChose, setTicker] = useState("")
+  const [isLoading, setIsLoading] = useState(false); // Loading state
 
   const BaseURL = "https://cvwo-ai-stock.onrender.com";
-  // Fetch logs whenever `aucMin` changes
+  // Fetch logs whenever aucMin or tickerChose changes
   useEffect(() => {
-    console.log("Fetching logs for auc_min:", aucMin);
-    const apiLink = tickerChose === ""
-                ? `${BaseURL}/logs/${aucMin}`
-                : `${BaseURL}/logs/${tickerChose}/${aucMin}`
-    axios
-      .get(apiLink)
-      .then((response) => {
+    const fetchLogs = async () => {
+      setIsLoading(true); // Start loading
+      setError(""); // Reset error message
+      const apiLink =
+        tickerChose === ""
+          ? `${BaseURL}/logs/${aucMin}`
+          : `${BaseURL}/logs/${tickerChose}/${aucMin}`;
+      try {
+        const response = await axios.get(apiLink);
         setLogs(response.data);
-        setError("");
-      })
-      .catch((err) => {
+      } catch (err) {
         console.error("Error fetching logs:", err);
         setError("Failed to fetch logs from the backend.");
-      });
+      } finally {
+        setIsLoading(false); // Stop loading
+      }
+    };
+    fetchLogs();
   }, [aucMin, tickerChose]);
 
   const handleTickerChange = (event) => {
@@ -78,54 +83,60 @@ function GetPrediction() {
         </div>
       </div>
       {error && <p style={{ color: "red" }}>{error}</p>}
-      <table>
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Ticker</th>
-            <th>Log Date</th>
-            <th>Price</th>
-            <th>Prediction</th>
-            <th>Outcome Date</th>
-            <th>Outcome Price</th>
-            <th>Confidence Train</th>
-            <th>Confidence Test</th>
-            <th>AUC SCORE</th>
-            <th>Prediction Outcome</th>
-          </tr>
-        </thead>
-        <tbody>
-          {logs.map((log) => (
-            <tr key={log.id}>
-              <td>{log.id}</td>
-              <td>{log.ticker}</td>
-              <td>{log.log_date}</td>
-              <td>{log.price}</td>
-              <td>{log.prediction}</td>
-              <td>{log.output_date}</td>
-              <td>{log.final_price}</td>
-              <td>{log.confidence_train}</td>
-              <td>{log.confidence_test}</td>
-              <td>{log.auc_roc_score}</td>
-              <td
-              className={
-                log.outcome === "Pending"
-                  ? "outcome-pending"
-                  : log.outcome
-                  ? "outcome-true"
-                  : "outcome-false"
-              }
-              >
-              {log.outcome === "Pending"
-                ? "Pending"
-                : log.outcome
-                ? "True"
-                : "False"}
-              </td>
+      {isLoading ? ( // Display loading state
+        <p style={{ fontWeight: "bold", color: "#007BFF" }}>
+          Loading Predictions...
+        </p>
+      ) : (
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Ticker</th>
+              <th>Log Date</th>
+              <th>Price</th>
+              <th>Prediction</th>
+              <th>Outcome Date</th>
+              <th>Outcome Price</th>
+              <th>Confidence Train</th>
+              <th>Confidence Test</th>
+              <th>AUC SCORE</th>
+              <th>Prediction Outcome</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {logs.map((log) => (
+              <tr key={log.id}>
+                <td>{log.id}</td>
+                <td>{log.ticker}</td>
+                <td>{log.log_date}</td>
+                <td>{log.price}</td>
+                <td>{log.prediction}</td>
+                <td>{log.output_date}</td>
+                <td>{log.final_price}</td>
+                <td>{log.confidence_train}</td>
+                <td>{log.confidence_test}</td>
+                <td>{log.auc_roc_score}</td>
+                <td
+                  className={
+                    log.outcome === "Pending"
+                      ? "outcome-pending"
+                      : log.outcome
+                      ? "outcome-true"
+                      : "outcome-false"
+                  }
+                >
+                  {log.outcome === "Pending"
+                    ? "Pending"
+                    : log.outcome
+                    ? "True"
+                    : "False"}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
     </div>
   );
 }
