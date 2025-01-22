@@ -111,7 +111,32 @@ function GetPrediction() {
                 <td>{log.ticker}</td>
                 <td>{log.log_date}</td>
                 <td>{log.price}</td>
-                <td>{log.prediction}</td>
+                <td>
+                  {log.prediction}{" "}
+                  {log.prediction === "Long" ? (
+                    <span
+                      style={{
+                        color: "blue",
+                        fontSize: "16px",
+                        fontWeight: "bold",
+                        marginLeft: "8px",
+                      }}
+                    >
+                      ↑
+                    </span>
+                  ) : log.prediction === "Short" ? (
+                    <span
+                      style={{
+                        color: "red",
+                        fontSize: "16px",
+                        fontWeight: "bold",
+                        marginLeft: "8px",
+                      }}
+                    >
+                      ↓
+                    </span>
+                  ) : null}
+                </td>
                 <td>{log.output_date}</td>
                 <td>{log.final_price}</td>
                 <td>{log.confidence_train}</td>
