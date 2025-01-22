@@ -114,27 +114,9 @@ function GetPrediction() {
                 <td>
                   {log.prediction}{" "}
                   {log.prediction === "Long" ? (
-                    <span
-                      style={{
-                        color: "blue",
-                        fontSize: "16px",
-                        fontWeight: "bold",
-                        marginLeft: "8px",
-                      }}
-                    >
-                      ↑
-                    </span>
+                    <span className="arrow-long"> ↑ </span>
                   ) : log.prediction === "Short" ? (
-                    <span
-                      style={{
-                        color: "red",
-                        fontSize: "16px",
-                        fontWeight: "bold",
-                        marginLeft: "8px",
-                      }}
-                    >
-                      ↓
-                    </span>
+                    <span className="arrow-short"> ↓ </span>
                   ) : null}
                 </td>
                 <td>{log.output_date}</td>
