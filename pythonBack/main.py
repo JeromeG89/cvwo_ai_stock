@@ -17,7 +17,7 @@ app = FastAPI()
 
 
 
-DB_FILE = "database.db"  # Path to your SQLite file
+DB_FILE = "database.db"  # Path to SQLite file
 
 def get_db_connection():
     connection = sqlite3.connect(DB_FILE)
@@ -26,7 +26,9 @@ def get_db_connection():
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],  # React app URL
+    allow_origins=[ 
+        "https://cvwo-jerome.onrender.com",  # frontend URL
+        "http://localhost:3000" ],  # React app URL
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -223,9 +225,9 @@ def get_chat(ticker: str):
         cursor.execute(query, (f"%{ticker}%",))
         results = cursor.fetchall()
         results = [dict(row) for row in results]
-        for result in results:
-            if result["timestamp"]:
-                result["timestamp"] = result["timestamp"].strftime("%Y-%m-%d %H:%M:?")
+        # for result in results:
+        #     if result["timestamp"]:
+        #         result["timestamp"] = result["timestamp"].strftime("%Y-%m-%d %H:%M:?")
         print(results)
         return results
 
@@ -304,7 +306,7 @@ def login_user(username: str = Body(...), password: str = Body(...)):
         if not user:
             raise HTTPException(status_code=404, detail="User not found")
 
-        # Ensure user["password_hash"] is a bytes object
+
         stored_password_hash = user["password_hash"]
         if isinstance(stored_password_hash, str):
             stored_password_hash = stored_password_hash.encode("utf-8")
